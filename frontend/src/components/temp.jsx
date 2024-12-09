@@ -1,3 +1,6 @@
+import { GithubIcon } from "lucide-react";
+import { render } from "react-dom";
+import React from "react";
 import { useState } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
@@ -36,7 +39,7 @@ export default function Form({route, method}) {
         }
 
     };
-  return <form onSubmit={handleSubmit} className="w-full mx-auto max-w-md bg-white rounded-xl shadow-sm p-8">
+  return <form onSubmit={handleSubmit} className="w-full max-w-md bg-white rounded-xl shadow-sm p-8">
         <h1>{name}</h1>
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold mb-2">Welcome back</h1>
