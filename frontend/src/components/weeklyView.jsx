@@ -1,5 +1,9 @@
-function WeeklyView({ events }) {
+import Event from "./event";
+import MiniEvent from "./MiniEvent";
+//smaller version of the event to fit into the skinny weekly view columns. Took out description display
+function WeeklyView({ events, deleteModal, editModal }) {
     // Get current week's dates
+    console.log(events);
     const getCurrentWeekDates = () => {
         const dates = [];
         const today = new Date();
@@ -11,16 +15,22 @@ function WeeklyView({ events }) {
             day.setDate(monday.getDate() + i);
             dates.push(day);
         }
+        // console.log(dates)
         return dates;
+        
     };
 
     const weekDates = getCurrentWeekDates();
+    console.log(weekDates)
+    const debugDate = (date) => {
+        return date.toISOString().split('T')[0];
+    };
 
     return (
-        <div className="bg-white rounded-xl shadow-sm p-0 sm:p-8">
-            <div className="grid grid-cols-7 gap-4">
+        <div className="bg-white rounded-xl shadow-sm p-0 sm:p-2">
+            <div className="grid grid-cols-7 gap-0 md:gap-1">
                 {weekDates.map((date, index) => (
-                    <div key={index} className="border p-4">
+                    <div key={index} className="border px-0 py-0">
                         <h3 className="font-medium mb-2">
                             {date.toLocaleDateString('en-US', { weekday: 'short' })}
                         </h3>
@@ -31,13 +41,16 @@ function WeeklyView({ events }) {
                         {events
                             .filter(event => {
                                 const eventDate = new Date(event.created_at);
-                                return eventDate.toDateString() === date.toDateString();
+                                console.log(eventDate==date)
+                                return eventDate.toLocaleDateString('en-US', { weekday: 'short' }) === date.toLocaleDateString('en-US', { weekday: 'short' });
                             })
                             .map(event => (
-                                <Event 
-                                    key={event.id}
+                                <MiniEvent 
                                     event={event}
-                                    compact={true} // You might want to create a compact version of the Event component
+                                    key={event.id}
+                                    onDelete={() => deleteModal(event.id)} 
+                                    onUpdate={() => editModal(event)} 
+                                   
                                 />
                             ))}
                     </div>

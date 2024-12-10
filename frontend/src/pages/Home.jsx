@@ -18,7 +18,7 @@ const sampleEvents = [
         time: '10:00 AM',
         content: 'Discuss project milestone progress',
         category: 'study',
-        created_at: new Date('2024-01-15T08:00:00')
+        created_at: new Date('2024-01-12T08:00:00')
     },
     {
         id: '2',
@@ -58,7 +58,7 @@ const sampleEvents = [
         time: '5:30 PM',
         content: 'Pick up ingredients for weekly meal pre sfsp',
         category: 'personal',
-        created_at: new Date('2024-01-15T16:10:00')
+        created_at: new Date('2024-01-12T16:10:00')
     }
 ];
 //end of sample events
@@ -218,8 +218,8 @@ function Home() {
     //api calls to get events, delete events, update events, create evetns
     return <div className="w-full max-w-[1440px] mx-auto px-0 py-0 sm:px-4 sm:py-8">
         <div className="flex items-center gap-6 mb-8">
-            <button onClick={()=>setCurrentView('weekly')} className="text-slate-600">Weekly View </button>
-            <button onClick={() => setCurrentView('daily')} className="text-blue-600 font-medium">Daily View </button>
+            <button onClick={()=>setCurrentView('weekly')} className={`${currentView === 'weekly' ? 'text-blue-600 font-medium' : 'text-slate-600'}`}>Weekly View </button>
+            <button onClick={() => setCurrentView('daily')} className={`${currentView === 'daily' ? 'text-blue-600 font-medium' : 'text-slate-600'}`}>Daily View </button>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm p-0 sm:p-8">
@@ -255,7 +255,11 @@ function Home() {
                     ))}
                 </div>
             ) : currentView === 'weekly' ? (
-                <WeeklyView events={displayedEvents} />
+                <WeeklyView 
+                    events={displayedEvents} 
+                    deleteModal={handleDelete}
+                    editModal={openEditModal}
+                />
             ) : null}
 
             {/* <div className="space-y-6">
