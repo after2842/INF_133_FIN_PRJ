@@ -7,6 +7,7 @@ import EditEventModal from "../components/editEvent";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import { filterEventsByCategory, sortEventsByCategory, getUniqueCategories } from '../utils/eventUtils';
 import EventControls from '../components/EventControls';
+import Weather from "../components/weather";
 
 //sample events to test without api
 const sampleEvents = [
@@ -214,6 +215,7 @@ function Home() {
                 Add Event
             </button>
         </div>
+        <Weather />
         <EventControls 
                 selectedCategory={selectedCategory}
                 setSelectedCategory={setSelectedCategory}
