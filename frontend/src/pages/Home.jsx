@@ -218,8 +218,8 @@ function Home() {
     //api calls to get events, delete events, update events, create evetns
     return <div className="w-full max-w-[1440px] mx-auto px-0 py-0 sm:px-4 sm:py-8">
         <div className="flex items-center gap-6 mb-8">
-            <a className="text-slate-600">Monthly View</a>
-            <a className="text-blue-600 font-medium">Daily View</a>
+            <button onClick={()=>setCurrentView('weekly')} className="text-slate-600">Weekly View </button>
+            <button onClick={() => setCurrentView('daily')} className="text-blue-600 font-medium">Daily View </button>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm p-0 sm:p-8">
@@ -243,16 +243,21 @@ function Home() {
                 setIsSortedByCategory={setIsSortedByCategory}
                 categories={categories}
             />
-            <div className="space-y-6">
-                {displayedEvents.map((event) => (
-                    <Event 
-                        event={event} 
-                        onDelete={() => handleDelete(event.id)} 
-                        onUpdate={() => openEditModal(event)} 
-                        key={event.id}  
-                    />
-                ))}
-            </div>
+           {currentView === 'daily' ? (
+                <div className="space-y-6">
+                    {displayedEvents.map((event) => (
+                        <Event 
+                            event={event} 
+                            onDelete={() => handleDelete(event.id)} 
+                            onUpdate={() => openEditModal(event)} 
+                            key={event.id}  
+                        />
+                    ))}
+                </div>
+            ) : currentView === 'weekly' ? (
+                <WeeklyView events={displayedEvents} />
+            ) : null}
+
             {/* <div className="space-y-6">
                 {events.map((event) => (
                     <Event event={event} onDelete={() => handleDelete(event.id)} onUpdate={() => openEditModal(event)} key={event.id}  />
