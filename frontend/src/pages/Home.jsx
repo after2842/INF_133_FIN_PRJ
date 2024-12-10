@@ -5,6 +5,8 @@ import Event from "../components/event";
 import AddEventModal from "../components/addEvent";
 import EditEventModal from "../components/editEvent";
 import DeleteConfirmModal from "../components/DeleteConfirmModal";
+import { filterEventsByCategory, sortEventsByCategory, getUniqueCategories } from '../utils/eventUtils';
+import EventControls from '../components/EventControls';
 
 //sample events to test without api
 const sampleEvents = [
@@ -59,11 +61,21 @@ function Home() {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [eventToDelete, setEventToDelete] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('all');
+    const [isSortedByCategory, setIsSortedByCategory] = useState(false);
 
     const [content, setContent] = useState("");
     const [time, setTime] = useState("");
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
+
+    const categories = getUniqueCategories(events);
+    const filteredEvents = filterEventsByCategory(events, selectedCategory);
+    const displayedEvents = sortEventsByCategory(filteredEvents, isSortedByCategory);
+
+    // const categories = ['all', ...new Set(events.map(event => event.category))];
+
+
 
 
     useEffect (() => {
@@ -201,14 +213,29 @@ function Home() {
                 <PlusIcon className="h-5 w-5" />
                 Add Event
             </button>
- 
-            </div>
-
+        </div>
+        <EventControls 
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+                isSortedByCategory={isSortedByCategory}
+                setIsSortedByCategory={setIsSortedByCategory}
+                categories={categories}
+            />
             <div className="space-y-6">
+                {displayedEvents.map((event) => (
+                    <Event 
+                        event={event} 
+                        onDelete={() => handleDelete(event.id)} 
+                        onUpdate={() => openEditModal(event)} 
+                        key={event.id}  
+                    />
+                ))}
+            </div>
+            {/* <div className="space-y-6">
                 {events.map((event) => (
                     <Event event={event} onDelete={() => handleDelete(event.id)} onUpdate={() => openEditModal(event)} key={event.id}  />
                 ))}
-            </div>
+            </div> */}
             <AddEventModal 
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
