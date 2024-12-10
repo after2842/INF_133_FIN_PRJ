@@ -8,6 +8,7 @@ import DeleteConfirmModal from "../components/DeleteConfirmModal";
 import { filterEventsByCategory, sortEventsByCategory, getUniqueCategories } from '../utils/eventUtils';
 import EventControls from '../components/EventControls';
 import Weather from "../components/weather";
+import WeeklyView from "../components/weeklyView";
 
 //sample events to test without api
 const sampleEvents = [
@@ -50,30 +51,48 @@ const sampleEvents = [
         content: 'Pick up ingredients for weekly meal prep',
         category: 'personal',
         created_at: new Date('2024-01-15T16:10:00')
+    },
+    {
+        id: '6',
+        title: 'Grocery Shopping 2',
+        time: '5:30 PM',
+        content: 'Pick up ingredients for weekly meal pre sfsp',
+        category: 'personal',
+        created_at: new Date('2024-01-15T16:10:00')
     }
 ];
 //end of sample events
 
 function Home() {
+    //load in users events
     const [events, setEvents] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    //open edit event screen
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [eventToEdit, setEventToEdit] = useState(null);
+    //confirm the user wants to delete event screen
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [eventToDelete, setEventToDelete] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    //sorting and filtering events by category
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [isSortedByCategory, setIsSortedByCategory] = useState(false);
 
+    //toggle between monthly and daily view
+    const [currentView, setCurrentView] = useState('daily'); // 'daily', 'weekly', or 'monthly'
+    
+    //set the state for the events
     const [content, setContent] = useState("");
     const [time, setTime] = useState("");
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
 
+    // getting all the event categorires to sort and filter by
     const categories = getUniqueCategories(events);
     const filteredEvents = filterEventsByCategory(events, selectedCategory);
     const displayedEvents = sortEventsByCategory(filteredEvents, isSortedByCategory);
-
+    
+    //already got categories in another file, saving just in case
     // const categories = ['all', ...new Set(events.map(event => event.category))];
 
 
@@ -85,6 +104,7 @@ function Home() {
 
     const getEvents = () => {
         //update later
+        //insert api call instead of sampelEvents
         setEvents(sampleEvents);
 
     }
@@ -266,4 +286,6 @@ function Home() {
     </div>;
 }
 
-export default Home
+export default Home;
+
+//line 254 comment is the old events mapping. leaving in just in case we have to revent back to it
