@@ -4,6 +4,7 @@ import { ClockIcon, Key, PlusIcon } from "lucide-react";
 import Event from "../components/event";
 import AddEventModal from "../components/addEvent";
 import EditEventModal from "../components/editEvent";
+import DeleteConfirmModal from "../components/DeleteConfirmModal";
 
 //sample events to test without api
 const sampleEvents = [
@@ -55,6 +56,8 @@ function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [eventToEdit, setEventToEdit] = useState(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [eventToDelete, setEventToDelete] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const [content, setContent] = useState("");
@@ -73,10 +76,46 @@ function Home() {
 
     }
 
-    const deleteEvent = (id) => {
-        console.log('testing delete')
-        //placeholder
-    }
+    const handleDelete = async (id) => {
+        setEventToDelete(events.find(event => event.id === id));
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        try {
+            // When ready for API:
+            // await api.delete(`/api/events/${eventToDelete.id}/`);
+            console.log('in try block')
+            setEvents(events.filter(event => event.id !== eventToDelete.id));
+            setIsDeleteModalOpen(false);
+            setEventToDelete(null);
+        } catch (error) {
+            console.error("Failed to delete event:", error);
+            alert("Failed to delete event. Please try again.");
+        }
+    };
+
+
+    // const handleDelete = async (id) => {
+    //     // Show confirmation dialog
+    //     if (!window.confirm('Are you sure you want to delete this event?')) {
+    //         return;
+    //     }
+
+    //     try {
+    //         // When ready for API:
+    //         // await api.delete(`/api/events/${id}/`);
+            
+    //         // For now, just update local state:
+    //         setEvents(events.filter(event => event.id !== id));
+    //     } catch (error) {
+    //         console.error("Failed to delete event:", error);
+    //         alert("Failed to delete event. Please try again.");
+    //     }
+    // };
+
+
+
 
     const createEvent = (newEvent) => {
         //placeholder
@@ -133,7 +172,7 @@ function Home() {
     //         setIsLoading(false);
     //     }
     // };
-
+    //part of handling the update logic
     const openEditModal = (event) => {
         setEventToEdit(event);
         setIsEditModalOpen(true);
@@ -167,7 +206,7 @@ function Home() {
 
             <div className="space-y-6">
                 {events.map((event) => (
-                    <Event event={event} onDelete={deleteEvent} onUpdate={() => openEditModal(event)} key={event.id}  />
+                    <Event event={event} onDelete={() => handleDelete(event.id)} onUpdate={() => openEditModal(event)} key={event.id}  />
                 ))}
             </div>
             <AddEventModal 
@@ -184,6 +223,15 @@ function Home() {
                 onSubmit={handleUpdate}
                 event={eventToEdit}
                 isLoading={isLoading}
+            />
+            <DeleteConfirmModal 
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setEventToDelete(null);
+                }}
+                onConfirm={confirmDelete}
+                eventTitle={eventToDelete?.title}
             />
         </div>
     </div>;
