@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+
+    <form method="POST" action="/login/" class="w-full mx-auto max-w-md bg-white rounded-xl shadow-sm p-8">
+        {% csrf_token %}
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold mb-2">Welcome back</h1>
+            <p class="text-slate-600">Sign in to continue to your account</p>
+        </div>
+    
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2" for="username">Username</label>
+                <input id="username" name="username" type="text" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200" placeholder="Enter your username" required>
+            </div>
+    
+            <div>
+                <label class="block text-sm font-medium mb-2" for="password">Password</label>
+                <input id="password" name="password" type="password" class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-200" placeholder="Enter your password" required>
+            </div>
+    
+            <button type="submit" class="w-full bg-slate-900 text-white py-2 px-4 rounded-lg hover:bg-slate-800 transition-colors">
+                Login
+            </button>
+        </div>
+    
+        {% if error %}
+        <p class="text-red-500 text-center mt-4">{{ error }}</p>
+        {% endif %}
+    </form>
+
+</body>
+</html>
